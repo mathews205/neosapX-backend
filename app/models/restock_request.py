@@ -1,0 +1,39 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+from sqlalchemy import ForeignKey, Index, Integer
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from app.models.base import Base, TimestampMixin
+from app.models.enums import RestockRequestStatus, restock_request_status_enum
+
+if TYPE_CHECKING:
+    from app.models.product import Product
+    from app.models.shop import Shop
+    from app.models.user import User
+
+
+class RestockRequest(TimestampMixin, Base):
+    __tablename__ = "restock_requests"
+
+    __table_args__ = (
+        Index("ix_restock_requests_shop_id_status", "shop_id", "status"),
+        Index("ix_restock_requests_shop_id_product_id", "shop_id", "product_id"),
+    )
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    shop_id: Mapped[int] = mapped_column(ForeignKey("shops.id"))
+    product_id: Mapped[int] = mapped_column(ForeignKey("products.id"))
+    created_by_user_id: Mapped[int | None] = mapped_column(ForeignKey("users.id"))
+    requested_quantity: Mapped[int | None] = mapped_column(Integer)
+
+    status: Mapped[RestockRequestStatus] = mapped_column(
+        restock_request_status_enum,
+        default=RestockRequestStatus.PENDING,
+        nullable=False,
+    )
+
+    shop: Mapped[Shop] = relationship(back_populates="restock_requests")
+    product: Mapped[Product] = relationship(back_populates="restock_requests")
+    created_by_user: Mapped[User | None] = relationship(back_populates="created_restock_requests")

@@ -1,4 +1,6 @@
+from urllib.parse import quote_plus
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
@@ -11,8 +13,16 @@ class Settings(BaseSettings):
     DB_NAME: str = "neosapx"
     DB_USER: str = "neosapx_user"
     DB_PASSWORD: str = ""
+    DB_SCHEMA: str = "app"
 
-    # Single DSN (what SQLAlchemy actually needs)
-    DATABASE_URL: str
+    @property
+    def DATABASE_URL(self) -> str:
+        pwd = quote_plus(self.DB_PASSWORD)
+        return (
+            f"postgresql+psycopg://{self.DB_USER}:{pwd}"
+            f"@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
+            f"?options=-csearch_path%3D{self.DB_SCHEMA}"
+        )
+
 
 settings = Settings()
