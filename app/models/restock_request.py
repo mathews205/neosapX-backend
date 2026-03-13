@@ -2,9 +2,10 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from sqlalchemy import ForeignKey, Index, Integer
+from sqlalchemy import ForeignKey, Index, Integer, text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
+from app.core.config import settings
 from app.models.base import Base, TimestampMixin
 from app.models.enums import RestockRequestStatus, restock_request_status_enum
 
@@ -19,7 +20,15 @@ class RestockRequest(TimestampMixin, Base):
 
     __table_args__ = (
         Index("ix_restock_requests_shop_id_status", "shop_id", "status"),
-        Index("ix_restock_requests_shop_id_product_id", "shop_id", "product_id"),
+        Index(
+            "uq_pending_restock_per_shop_product",
+            "shop_id",
+            "product_id",
+            unique=True,
+            postgresql_where=text(
+                f"status = 'pending'::{settings.DB_SCHEMA}.restock_request_status_enum"
+            ),
+        ),
     )
 
     id: Mapped[int] = mapped_column(primary_key=True)

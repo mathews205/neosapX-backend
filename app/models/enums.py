@@ -22,6 +22,7 @@ user_role_enum = SqlEnum(
     name="user_role_enum",
     schema=settings.DB_SCHEMA,
     create_type=True,
+    values_callable=lambda enum_cls: [e.value for e in enum_cls],
 )
 
 restock_request_status_enum = SqlEnum(
@@ -29,4 +30,5 @@ restock_request_status_enum = SqlEnum(
     name="restock_request_status_enum",
     schema=settings.DB_SCHEMA,
     create_type=True,
+    values_callable=lambda enum_cls: [e.value for e in enum_cls],
 )

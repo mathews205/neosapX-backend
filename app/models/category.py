@@ -5,7 +5,7 @@ if TYPE_CHECKING:
     from .shop import Shop
     from .shop_product import ShopProduct
 
-from sqlalchemy import ForeignKey, Integer, String
+from sqlalchemy import ForeignKey, Index, Integer, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base, TimestampMixin
@@ -13,6 +13,10 @@ from app.models.base import Base, TimestampMixin
 
 class Category(TimestampMixin, Base):
     __tablename__ = "categories"
+    __table_args__ = (
+        UniqueConstraint("shop_id", "name", name="unique_shop_category"),
+        Index("ix_categories_shop_id_position", "shop_id", "position")
+    )
 
     id: Mapped[int] = mapped_column(primary_key=True)
     shop_id: Mapped[int] = mapped_column(ForeignKey("shops.id"))
