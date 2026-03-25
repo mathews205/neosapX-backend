@@ -1,21 +1,17 @@
 from fastapi import FastAPI
 
-from app.api.shops_router import router as shops_router
-from app.api.products_router import router as products_router
-from app.api.shop_products_router import router as shop_products_router
-from app.api.restock_router import router as restock_router
-from app.api.expiry_router import router as expiry_router
+from app.api.router import api_router
 
-app = FastAPI(title="NeoSapX API", version="1.0.0")
+app = FastAPI(
+    title="NeoSapX API",
+    version="0.1.0",
+    description="Retail Operations Automation Backend for small convenience stores",
+)
 
 
-@app.get("/")
+@app.get("/", tags=["Health"])
 def root():
-    return {"message": "NeoSapX API is running"}
+    return {"message": "NeoSapX API running"}
 
 
-app.include_router(shops_router)
-app.include_router(products_router)
-app.include_router(shop_products_router)
-app.include_router(restock_router)
-app.include_router(expiry_router)
+app.include_router(api_router, prefix="/api/v1")

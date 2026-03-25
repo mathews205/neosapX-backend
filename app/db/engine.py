@@ -12,5 +12,4 @@ def create_db_engine() -> Engine:
         echo=False,  # set True temporarily if you want to see SQL logs
     )
 
-
 engine = create_db_engine()
