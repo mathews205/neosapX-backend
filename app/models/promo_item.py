@@ -23,9 +23,9 @@ class PromoItem(TimestampMixin, Base):
     )
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    shop_id: Mapped[int] = mapped_column(ForeignKey("shops.id"))
-    product_id: Mapped[int] = mapped_column(ForeignKey("products.id"))
-    expiry_batch_id: Mapped[int] = mapped_column(ForeignKey("expiry_batches.id"))
+    shop_id: Mapped[int] = mapped_column(ForeignKey("shops.id"), nullable=False)
+    product_id: Mapped[int] = mapped_column(ForeignKey("products.id"), nullable=False)
+    expiry_batch_id: Mapped[int] = mapped_column(ForeignKey("expiry_batches.id"), nullable=False)
     added_by_user_id: Mapped[int | None] = mapped_column(ForeignKey("users.id"), nullable=True)
 
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)

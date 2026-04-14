@@ -24,9 +24,9 @@ class ShopProduct(TimestampMixin, Base):
     )
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    shop_id: Mapped[int] = mapped_column(ForeignKey("shops.id"))
-    product_id: Mapped[int] = mapped_column(ForeignKey("products.id"))
-    category_id: Mapped[int | None] = mapped_column(ForeignKey("categories.id"))
+    shop_id: Mapped[int] = mapped_column(ForeignKey("shops.id"), nullable=False)
+    product_id: Mapped[int] = mapped_column(ForeignKey("products.id"), nullable=False)
+    category_id: Mapped[int | None] = mapped_column(ForeignKey("categories.id"), nullable=True)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
 
     shop: Mapped[Shop] = relationship(back_populates="shop_products")

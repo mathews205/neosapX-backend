@@ -12,6 +12,7 @@ from app.models.enums import RestockRequestStatus, restock_request_status_enum
 if TYPE_CHECKING:
     from app.models.product import Product
     from app.models.shop import Shop
+    from app.models.supplier import Supplier
     from app.models.user import User
 
 
@@ -32,10 +33,11 @@ class RestockRequest(TimestampMixin, Base):
     )
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    shop_id: Mapped[int] = mapped_column(ForeignKey("shops.id"))
-    product_id: Mapped[int] = mapped_column(ForeignKey("products.id"))
-    created_by_user_id: Mapped[int | None] = mapped_column(ForeignKey("users.id"))
-    requested_quantity: Mapped[int | None] = mapped_column(Integer)
+    shop_id: Mapped[int] = mapped_column(ForeignKey("shops.id"), nullable=False)
+    product_id: Mapped[int] = mapped_column(ForeignKey("products.id"), nullable=False)
+    supplier_id: Mapped[int | None] = mapped_column(ForeignKey("suppliers.id"), nullable=True)
+    created_by_user_id: Mapped[int | None] = mapped_column(ForeignKey("users.id"), nullable=True)
+    requested_quantity: Mapped[int | None] = mapped_column(Integer, nullable=True)
 
     status: Mapped[RestockRequestStatus] = mapped_column(
         restock_request_status_enum,
@@ -45,4 +47,5 @@ class RestockRequest(TimestampMixin, Base):
 
     shop: Mapped[Shop] = relationship(back_populates="restock_requests")
     product: Mapped[Product] = relationship(back_populates="restock_requests")
+    supplier: Mapped[Supplier | None] = relationship()
     created_by_user: Mapped[User | None] = relationship(back_populates="created_restock_requests")

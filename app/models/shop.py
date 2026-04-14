@@ -20,8 +20,10 @@ class Shop(TimestampMixin, Base):
     __tablename__ = "shops"
 
     id: Mapped[int] = mapped_column(primary_key=True)
+    shop_code: Mapped[str] = mapped_column(String(20), unique=True, nullable=False)
     name: Mapped[str] = mapped_column(String(150), nullable=False)
-    location: Mapped[str | None] = mapped_column(String(255))
+    location: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    siret: Mapped[str | None] = mapped_column(String(20), unique=True, nullable=True)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
 
     users: Mapped[list[User]] = relationship(back_populates="shop")

@@ -10,8 +10,8 @@ from app.models.base import Base, TimestampMixin
 
 if TYPE_CHECKING:
     from app.models.product import Product
-    from app.models.shop import Shop
     from app.models.promo_item import PromoItem
+    from app.models.shop import Shop
 
 
 class ExpiryBatch(TimestampMixin, Base):
@@ -23,13 +23,11 @@ class ExpiryBatch(TimestampMixin, Base):
     )
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    shop_id: Mapped[int] = mapped_column(ForeignKey("shops.id"))
-    product_id: Mapped[int] = mapped_column(ForeignKey("products.id"))
-    
+    shop_id: Mapped[int] = mapped_column(ForeignKey("shops.id"), nullable=False)
+    product_id: Mapped[int] = mapped_column(ForeignKey("products.id"), nullable=False)
 
-    expiry_date: Mapped[date] = mapped_column(Date)
+    expiry_date: Mapped[date] = mapped_column(Date, nullable=False)
     alert_days: Mapped[int] = mapped_column(Integer, default=3, nullable=False)
-    
 
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
     finished_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)

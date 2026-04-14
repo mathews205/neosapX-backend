@@ -1,4 +1,5 @@
 from urllib.parse import quote_plus
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -7,7 +8,6 @@ class Settings(BaseSettings):
 
     APP_ENV: str = "dev"
 
-    # Individual fields (useful for debugging & flexibility)
     DB_HOST: str = "localhost"
     DB_PORT: int = 5432
     DB_NAME: str = "neosapx"

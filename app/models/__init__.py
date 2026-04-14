@@ -6,6 +6,7 @@ from app.models.restock_request import RestockRequest
 from app.models.shop import Shop
 from app.models.shop_product import ShopProduct
 from app.models.supplier import Supplier
+from app.models.supplier_product import SupplierProduct
 from app.models.user import User
 
 __all__ = [
@@ -15,6 +16,7 @@ __all__ = [
     "Product",
     "Category",
     "ShopProduct",
+    "SupplierProduct",
     "RestockRequest",
     "ExpiryBatch",
     "PromoItem",

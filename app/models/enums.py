@@ -8,6 +8,8 @@ from app.core.config import settings
 class UserRole(str, enum.Enum):
     OWNER = "owner"
     EMPLOYEE = "employee"
+    WAREHOUSE_SUPERVISOR = "warehouse_supervisor"
+    WAREHOUSE_EMPLOYEE = "warehouse_employee"
 
 
 class RestockRequestStatus(str, enum.Enum):
